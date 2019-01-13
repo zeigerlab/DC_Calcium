@@ -231,7 +231,7 @@ drawnow; %Update GUI
 Y = reshape(Y,d,T);
 [A,b,Cin] = update_spatial_components(Y,Cin,fin,[Ain,bin],P,options); %Update spatial components
 P.p = 0;    %Turn off autoregression dynamics temporarily for speed
-[C,f,P,S,YrA] = update_temporal_components(Y,A,b,Cin,fin,P,options); %Update temporal components
+[C,f,P,S,~] = update_temporal_components(Y,A,b,Cin,fin,P,options); %Update temporal components
 %-----------End update spatial and temporal components-----------------
 
 %---------------Classify and Select-------------
@@ -268,7 +268,7 @@ P.p = 0;    %Turn off autoregression dynamics temporarily for speed
 %------------------------Merge found components------------------------
 set(handles.status_bar, 'String', 'Merging found components'); %Update status bar
 drawnow; %Update GUI
-[Am,Cm,K_m,merged_ROIs,Pm,Sm] = merge_components(Y,A,b,C,f,P,S,options); %Merge similar components
+[Am,Cm,K_m,merged_ROIs,Pm,~] = merge_components(Y,A,b,C,f,P,S,options); %Merge similar components
 
 %------------Generate merging example-------------
 if and(autoroi.check_merge, ~isempty(merged_ROIs)) %Check if "Display Merging Example" is selected in GUI and that at least two components were merged
@@ -293,7 +293,7 @@ end
 Pm.p=p; %Restore autoregression dynamics value
 [A2,b2,C2] = update_spatial_components(Y,Cm,f,[Am,b],Pm,options); %Update spatial components
 C2_raw=C2; %Save a copy of C2 data, before many data points are constrained to non-negative values
-[C2,f2,P2,S2,YrA2] = update_temporal_components(Y,A2,b2,C2,f,Pm,options); %Update temporal components
+[C2,f2,P2,S2,~] = update_temporal_components(Y,A2,b2,C2,f,Pm,options); %Update temporal components
 
 %===============================Plotting================================
 set(handles.status_bar, 'String', 'Plotting components'); %Update status bar
@@ -304,7 +304,7 @@ F=C2_raw_or'; %Save raw fluorescence data
 
 %------------ROI Map Plotting---------------
 figure; %Open a new figure
-[Coor,json_file] = plot_contours(A_or,Cn,options,1); %Run calculations for plotting an ROI map. One is automatically opened, but can be closed so that the matrix Coor is still generated.
+[Coor,~] = plot_contours(A_or,Cn,options,1); %Run calculations for plotting an ROI map. One is automatically opened, but can be closed so that the matrix Coor is still generated.
 if autoroi.check_map==1 %Check if "Display ROI Map" has been selected in the GUI
     if get(handles.check_pdf,'Value')==1 %Check if "Save PDFs" has been selected in the GUI
         fig=gcf; %Target the current figure
