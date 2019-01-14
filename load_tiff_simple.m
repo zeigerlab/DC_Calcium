@@ -13,8 +13,8 @@ function [data,frame_count] = load_tiff_simple(file_name)
 
 tiff = Tiff(file_name,'r');
 
-length = tiff.getTag('ImageLength');
-width = tiff.getTag('ImageWidth');
+im_length = tiff.getTag('ImageLength');
+im_width = tiff.getTag('ImageWidth');
 
 frame_count = 1;
 while ~tiff.lastDirectory
@@ -23,7 +23,7 @@ while ~tiff.lastDirectory
 end
 
 temp = tiff.read;
-data = zeros(length,width,frame_count,'like',temp);
+data = zeros(im_length,im_width,frame_count,'like',temp);
 
 for cur_frame = 1:frame_count
     tiff.setDirectory(cur_frame)
