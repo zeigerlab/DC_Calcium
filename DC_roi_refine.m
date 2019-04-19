@@ -385,7 +385,7 @@ if iscell(add_file)||ischar(add_file) %Checks to see if anything was selected
         set(handles.ROI_list,'String',handles.ROI.ROI_names); %Update the ROI list
         drawnow
         handles.ROI.ROI_names=cellstr(get(handles.ROI_list,'String')); %Get the list back, convert to cell array of character vectors
-        handles.ROI.ROI_names=char(pad(handles.ROI.ROI_names,5)); %Add blank characters to the end, convert back to character array
+        handles.ROI.ROI_names=char(pad(handles.ROI.ROI_names,7)); %Add blank characters to the end, convert back to character array
         set(handles.ROI_list,'String',handles.ROI.ROI_names); %Update ROI names
     end
     
@@ -1023,6 +1023,7 @@ C_or_refined=handles.ROI.C_or(handles.ROI.included_ROIs,:); %Fitted data
 C2_raw_or_refined=handles.ROI.C2_raw_or(handles.ROI.included_ROIs,:); %Raw data
 S_or_refined=handles.ROI.S_or(handles.ROI.included_ROIs,:); %Deconvolved data
 Z_F_refined=handles.ROI.Z_F(handles.ROI.included_ROIs,:); %Z-score data
+ROI_centers=handles.ROI.center;
 
 %CSV Export
 refined_filename=[handles.full_filepath(1:end-4) '_refined_raw.csv'];
@@ -1033,10 +1034,12 @@ refined_filename=[handles.full_filepath(1:end-4) '_refined_decon.csv'];
 csvwrite(refined_filename,S_or_refined);
 refined_filename=[handles.full_filepath(1:end-4) '_refined_ZF.csv'];
 csvwrite(refined_filename,Z_F_refined);
+refined_filename=[handles.full_filepath(1:end-4) '_refined_centers.csv'];
+csvwrite(refined_filename,ROI_centers);
 
 %MAT Export
 refined_filename=[handles.full_filepath(1:end-4) '_refined.mat'];
-save(refined_filename,'C_or_refined','C2_raw_or_refined','S_or_refined','Z_F_refined','F');
+save(refined_filename,'C_or_refined','C2_raw_or_refined','S_or_refined','Z_F_refined','F','ROI_centers');
 
 %XLSX Export
 refined_filename=[handles.full_filepath(1:end-4) '_refined.xlsx'];
@@ -1044,6 +1047,7 @@ xlswrite(refined_filename,C2_raw_or_refined,'Raw');
 xlswrite(refined_filename,C_or_refined,'Fit');
 xlswrite(refined_filename,S_or_refined,'Deconvolved');
 xlswrite(refined_filename,Z_F_refined,'Z_F');
+xlswrite(refined_filename,ROI_centers,'Centers');
 
 save(handles.full_filepath);
 
