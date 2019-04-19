@@ -1023,9 +1023,10 @@ C_or_refined=handles.ROI.C_or(handles.ROI.included_ROIs,:); %Fitted data
 C2_raw_or_refined=handles.ROI.C2_raw_or(handles.ROI.included_ROIs,:); %Raw data
 S_or_refined=handles.ROI.S_or(handles.ROI.included_ROIs,:); %Deconvolved data
 Z_F_refined=handles.ROI.Z_F(handles.ROI.included_ROIs,:); %Z-score data
-ROI_centers=handles.ROI.center;
+ROI_centers=handles.ROI.center(handles.ROI.included_ROIs,:);
 
 %CSV Export
+if csv_save
 refined_filename=[handles.full_filepath(1:end-4) '_refined_raw.csv'];
 csvwrite(refined_filename,C2_raw_or_refined);
 refined_filename=[handles.full_filepath(1:end-4) '_refined_fit.csv'];
@@ -1036,18 +1037,23 @@ refined_filename=[handles.full_filepath(1:end-4) '_refined_ZF.csv'];
 csvwrite(refined_filename,Z_F_refined);
 refined_filename=[handles.full_filepath(1:end-4) '_refined_centers.csv'];
 csvwrite(refined_filename,ROI_centers);
+end
 
 %MAT Export
+if mat_save
 refined_filename=[handles.full_filepath(1:end-4) '_refined.mat'];
 save(refined_filename,'C_or_refined','C2_raw_or_refined','S_or_refined','Z_F_refined','F','ROI_centers');
+end
 
 %XLSX Export
+if xlsx_save
 refined_filename=[handles.full_filepath(1:end-4) '_refined.xlsx'];
 xlswrite(refined_filename,C2_raw_or_refined,'Raw');
 xlswrite(refined_filename,C_or_refined,'Fit');
 xlswrite(refined_filename,S_or_refined,'Deconvolved');
 xlswrite(refined_filename,Z_F_refined,'Z_F');
 xlswrite(refined_filename,ROI_centers,'Centers');
+end
 
 save(handles.full_filepath);
 
