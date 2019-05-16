@@ -35,7 +35,8 @@ if strcmpi(extension,'tif') || strcmpi(extension,'tiff')
     
     %Checks for compression
     if strcmp(vid_info(1).Compression,'Uncompressed') %Loads uncompressed videos
-        [Y,num_frames]=load_tiff_simple(fullvidfile); %Read uncompressed Tiff and extract number of frames
+        Y=loadtiff(fullvidfile); %Read uncompressed Tiff
+        num_frames=size(Y,3); %Extract number of frames
         if autoroi.frames_box==1 %Check if all frames being read
             start_frame=1; %Start at frame 1
             end_frame=num_frames; %Detect number of frames
